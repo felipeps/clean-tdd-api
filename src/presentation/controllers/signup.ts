@@ -1,7 +1,7 @@
 import { AddAccount } from '../../domain/usecases/add-account'
 import { InvalidParamError } from '../errors/invalid-param-error'
 import { MissingParamError } from '../errors/missing-param-error'
-import { badRequest, serverError } from '../helpers/http-helper'
+import { badRequest, ok, serverError } from '../helpers/http-helper'
 import { Controller } from '../protocols/controller'
 import { HttpRequest, HttpResponse } from '../protocols/http'
 
@@ -28,11 +28,13 @@ export class SignUpController implements Controller {
 
       const { name, email, password } = httpRequest.body
 
-      this.addAccount.add({
+      const account = this.addAccount.add({
         name,
         email,
         password
       })
+
+      return ok(account)
     } catch (error) {
       return serverError(error)
     }
