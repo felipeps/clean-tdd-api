@@ -1,7 +1,7 @@
-import { AccountModel } from '../../domain/models/account'
-import { AddAccount, AddAccountModel } from '../../domain/usecases/add-account'
-import { InvalidParamError } from '../errors/invalid-param-error'
-import { MissingParamError } from '../errors/missing-param-error'
+import { AccountModel } from '../../../domain/models/account'
+import { AddAccount, AddAccountModel } from '../../../domain/usecases/add-account'
+import { InvalidParamError } from '../../errors/invalid-param-error'
+import { MissingParamError } from '../../errors/missing-param-error'
 import { SignUpController } from './signup'
 
 const makeAddAccount = (): AddAccount => {
