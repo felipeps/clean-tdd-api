@@ -1,24 +1,47 @@
+import { AccountModel } from '../../../domain/models/account'
+import { AddAccountModel } from '../../../domain/usecases/add-account'
+import { AddAccountRepository } from '../../protocols/add-account-repository'
 import { Encrypter } from '../../protocols/encrypter'
 import { DbAddAccount } from './db-account-account'
 
 interface SutTypes {
   sut: DbAddAccount
   encryptStub: Encrypter
+  addAccountRepositoryStub: AddAccountRepository
 }
 
-const makeSut = (): SutTypes => {
+const makeAddAccountRepository = (): AddAccountRepository => {
+  class AddAccountRepositoryStub {
+    async add (accountData: AddAccountModel): Promise<AccountModel> {
+      return {
+        id: 'valid_id',
+        ...accountData
+      }
+    }
+  }
+
+  return new AddAccountRepositoryStub()
+}
+
+const makeEncrypter = (): Encrypter => {
   class EncrypterStub {
     async encrypt (password: string): Promise<string> {
       return `hashed_${password}`
     }
   }
 
-  const encryptStub = new EncrypterStub()
-  const sut = new DbAddAccount(encryptStub)
+  return new EncrypterStub()
+}
+
+const makeSut = (): SutTypes => {
+  const encryptStub = makeEncrypter()
+  const addAccountRepositoryStub = makeAddAccountRepository()
+  const sut = new DbAddAccount(encryptStub, addAccountRepositoryStub)
 
   return {
     sut,
-    encryptStub
+    encryptStub,
+    addAccountRepositoryStub
   }
 }
 
@@ -51,5 +74,23 @@ describe('DbAddAccount Usecase', () => {
     }
 
     expect(sut.add(accountData)).rejects.toThrow()
+  })
+
+  test('Should call AddAccountRepository with correct values', async () => {
+    const { sut, addAccountRepositoryStub } = makeSut()
+    const addSpy = jest.spyOn(addAccountRepositoryStub, 'add')
+    const accountData = {
+      name: 'valid_name',
+      email: 'valid_email@mail.com',
+      password: 'valid_password'
+    }
+
+    await sut.add(accountData)
+
+    expect(addSpy).toHaveBeenCalledWith({
+      name: 'valid_name',
+      email: 'valid_email@mail.com',
+      password: 'hashed_valid_password'
+    })
   })
 })
