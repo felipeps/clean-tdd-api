@@ -1,6 +1,6 @@
 import { Authentication } from '../../../domain/usecases/authentication'
 import { MissingParamError } from '../../errors/missing-param-error'
-import { badRequest } from '../../helpers/http-helper'
+import { badRequest, unauthorized } from '../../helpers/http-helper'
 import { LoginController } from './login'
 
 const makeAuthentication = (): Authentication => {
@@ -65,5 +65,21 @@ describe('Login Controller', () => {
     await sut.handle(httpRequest)
 
     expect(authSpy).toHaveBeenCalledWith('any_email@mail.com', 'any_password')
+  })
+
+  test('Should return 401 if invalid credentails are provided', async () => {
+    const { sut, authenticationStub } = makeSut()
+
+    jest.spyOn(authenticationStub, 'auth').mockReturnValueOnce(new Promise(resolve => resolve(null)))
+
+    const httpRequest = {
+      body: {
+        email: 'any_email@mail.com',
+        password: 'any_password'
+      }
+    }
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(unauthorized())
   })
 })
