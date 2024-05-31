@@ -155,4 +155,12 @@ describe('DbAuthentication UseCase', () => {
 
     expect(sut.auth(fakeAuthentication.email, fakeAuthentication.password)).rejects.toThrow()
   })
+
+  test('Should throw if TokenGenerator throws', async () => {
+    const { sut } = makeSut()
+    const fakeAuthentication = makeFakeAuthentication()
+    const accessToken = await sut.auth(fakeAuthentication.email, fakeAuthentication.password)
+
+    expect(accessToken).toBe('any_token')
+  })
 })
