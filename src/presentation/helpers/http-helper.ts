@@ -18,5 +18,5 @@ export const unauthorized = (): HttpResponse => ({
 
 export const ok = (data: any): HttpResponse => ({
   statusCode: 200,
-  body: data.message
+  body: data
 })
