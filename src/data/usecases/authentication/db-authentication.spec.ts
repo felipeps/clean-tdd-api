@@ -16,14 +16,34 @@ const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
   return new LoadAccountByEmailRepositoryStub()
 }
 
+interface SutTypes {
+  sut: DbAuthentication
+  loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
+}
+
+const makeSut = (): SutTypes => {
+  const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository()
+  const sut = new DbAuthentication(loadAccountByEmailRepositoryStub)
+
+  return {
+    sut,
+    loadAccountByEmailRepositoryStub
+  }
+}
+
+const makeFakeAuthentication = (): { email: string, password: string } => ({
+  email: 'valid_email@mail.com',
+  password: 'valid_password'
+})
+
 describe('DbAuthentication UseCase', () => {
   test('Should call LoadAccountByEmailRepository with correct email', async () => {
-    const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository()
-    const sut = new DbAuthentication(loadAccountByEmailRepositoryStub)
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut()
     const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'load')
+    const fakeAuthentication = makeFakeAuthentication()
 
-    await sut.auth('any_email@mail.com', 'any_password')
+    await sut.auth(fakeAuthentication.email, fakeAuthentication.password)
 
-    expect(loadSpy).toHaveBeenLastCalledWith('any_email@mail.com')
+    expect(loadSpy).toHaveBeenLastCalledWith('valid_email@mail.com')
   })
 })
