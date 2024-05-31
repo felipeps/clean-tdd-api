@@ -3,12 +3,12 @@ import { HttpResponse } from '../protocols/http'
 
 export const badRequest = (error: Error): HttpResponse => ({
   statusCode: 400,
-  body: error
+  body: error.message
 })
 
 export const serverError = (error: Error): HttpResponse => ({
   statusCode: 500,
-  body: error
+  body: error.message
 })
 
 export const unauthorized = (): HttpResponse => ({
@@ -18,5 +18,5 @@ export const unauthorized = (): HttpResponse => ({
 
 export const ok = (data: any): HttpResponse => ({
   statusCode: 200,
-  body: data
+  body: data.message
 })
