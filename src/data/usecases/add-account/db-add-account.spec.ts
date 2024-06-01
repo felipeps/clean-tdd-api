@@ -8,12 +8,7 @@ import { LoadAccountByEmailRepository } from '../../protocols/db/load-account-by
 const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
     async loadByEmail (email: string): Promise<AccountModel> {
-      return await Promise.resolve({
-        id: 'valid_id',
-        name: 'valid_name',
-        email: 'valid_email@mail.com',
-        password: 'hashed_password'
-      })
+      return await Promise.resolve(null)
     }
   }
   return new LoadAccountByEmailRepositoryStub()
@@ -158,5 +153,23 @@ describe('DbAddAccount Usecase', () => {
     await sut.add(accountData)
 
     expect(loadSpy).toHaveBeenLastCalledWith('valid_email@mail.com')
+  })
+
+  test('Should return null if LoadAccountByEmailrepository do not return null', async () => {
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut()
+    const accountData = {
+      name: 'valid_name',
+      email: 'valid_email@mail.com',
+      password: 'valid_password'
+    }
+
+    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(Promise.resolve({
+      id: 'any_id',
+      ...accountData
+    }))
+
+    const account = await sut.add(accountData)
+
+    expect(account).toBeNull()
   })
 })
