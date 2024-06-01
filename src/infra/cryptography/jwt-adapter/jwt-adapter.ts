@@ -9,6 +9,7 @@ export class JwtAdapter implements TokenGenerator {
   }
 
   async generate (id: string): Promise<string> {
-    return jwt.sign({ id }, this.secret)
+    const accessToken = jwt.sign({ id }, this.secret)
+    return accessToken
   }
 }
