@@ -1,6 +1,8 @@
 import { Collection } from 'mongodb'
 import { MongoHelper } from '../helpers/mongo-helper'
 import { AccountMongoRepository } from './account'
+import { id } from '../../../../../jest.config'
+import { AccountModel } from '../../../../domain/models/account'
 
 describe('Account Mongo Repository', () => {
   let accountCollection: Collection
@@ -55,5 +57,26 @@ describe('Account Mongo Repository', () => {
     const account = await sut.loadByEmail('any_email@mail.com')
 
     expect(account).toBeFalsy()
+  })
+
+  test('Should update account accessToken on success', async () => {
+    let findOneResult: any
+
+    const sut = new AccountMongoRepository()
+    const result = await accountCollection.insertOne({
+      name: 'any_name',
+      email: 'any_email@mail.com',
+      password: 'any_password'
+    })
+
+    findOneResult = await accountCollection.findOne({ _id: result.insertedId })
+
+    expect(findOneResult.accessToken).toBeFalsy()
+
+    await sut.updateAccessToken(result.insertedId.toString(), 'any_token')
+
+    findOneResult = await accountCollection.findOne({ _id: result.insertedId })
+
+    expect(findOneResult.accessToken).toBe('any_token')
   })
 })
