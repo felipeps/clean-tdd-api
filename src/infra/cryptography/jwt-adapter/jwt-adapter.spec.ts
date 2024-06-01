@@ -5,13 +5,13 @@ describe('Jwt Adapter', () => {
   test('Should call sign with correct values', async () => {
     const sut = new JwtAdapter('secret')
     const signSpy = jest.spyOn(jwt, 'sign')
-    await sut.generate('any_id')
+    await sut.encrypt('any_id')
     expect(signSpy).toHaveBeenCalledWith({ id: 'any_id' }, 'secret')
   })
 
   test('Should return a token on sign success', async () => {
     const sut = new JwtAdapter('secret')
-    const accessToken = await sut.generate('any_id')
+    const accessToken = await sut.encrypt('any_id')
     expect(accessToken).toBeTruthy()
   })
 
@@ -22,6 +22,6 @@ describe('Jwt Adapter', () => {
       throw new Error()
     })
 
-    expect(sut.generate('any_id')).rejects.toThrow()
+    expect(sut.encrypt('any_id')).rejects.toThrow()
   })
 })

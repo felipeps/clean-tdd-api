@@ -1,14 +1,14 @@
 import jwt from 'jsonwebtoken'
-import { TokenGenerator } from '../../../data/protocols/cryptography/token-generator'
+import { Encrypter } from '../../../data/protocols/cryptography/encrypter'
 
-export class JwtAdapter implements TokenGenerator {
+export class JwtAdapter implements Encrypter {
   private readonly secret: string
 
   constructor (secret: string) {
     this.secret = secret
   }
 
-  async generate (id: string): Promise<string> {
+  async encrypt (id: string): Promise<string> {
     const accessToken = jwt.sign({ id }, this.secret)
     return accessToken
   }
