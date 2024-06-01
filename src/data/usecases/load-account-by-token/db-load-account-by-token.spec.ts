@@ -18,7 +18,7 @@ const makeLoadAccountByTokenRepository = (): LoadAccountByTokenRepository => {
       return {
         id: 'any_id',
         name: 'any_name',
-        email: 'any_email',
+        email: 'any_email@mail.com',
         password: 'any_password'
       }
     }
@@ -80,5 +80,16 @@ describe('DbLoadAccountByToken UseCase', () => {
     const account = await sut.loadAccountByToken('any_token')
 
     expect(account).toBeNull()
+  })
+
+  test('Should return an account on success', async () => {
+    const { sut } = makeSut()
+    const account = await sut.loadAccountByToken('any_token')
+    expect(account).toEqual({
+      id: 'any_id',
+      name: 'any_name',
+      email: 'any_email@mail.com',
+      password: 'any_password'
+    })
   })
 })
