@@ -18,7 +18,12 @@ const makeValidation = (): Validation => {
 const makeAddPost = (): AddPost => {
   class AddPostStub implements AddPost {
     async add (post: any): Promise<any> {
-      return new Promise(resolve => resolve(null))
+      return {
+        id: 'valid_id',
+        name: 'any_name',
+        content: 'any_content',
+        userId: 'any_user_id'
+      }
     }
   }
 
@@ -49,7 +54,7 @@ describe('CreatePost Controller', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
-        content: 'any_email@mail.com',
+        content: 'any_content',
         userId: 'any_user_id'
       }
     }
@@ -67,7 +72,7 @@ describe('CreatePost Controller', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
-        content: 'any_email@mail.com',
+        content: 'any_content',
         userId: 'any_user_id'
       }
     }
@@ -82,7 +87,7 @@ describe('CreatePost Controller', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
-        content: 'any_email@mail.com',
+        content: 'any_content',
         userId: 'any_user_id'
       }
     }
@@ -91,7 +96,7 @@ describe('CreatePost Controller', () => {
 
     expect(addSpy).toHaveBeenCalledWith({
       name: 'any_name',
-      content: 'any_email@mail.com',
+      content: 'any_content',
       userId: 'any_user_id'
     })
   })
@@ -106,7 +111,7 @@ describe('CreatePost Controller', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
-        content: 'any_email@mail.com',
+        content: 'any_content',
         userId: 'any_user_id'
       }
     }
@@ -115,5 +120,25 @@ describe('CreatePost Controller', () => {
 
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new Error())
+  })
+
+  test('Should return 200 if valid data is provided', async () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        content: 'any_content',
+        userId: 'any_user_id'
+      }
+    }
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse.statusCode).toBe(200)
+    expect(httpResponse.body).toEqual({
+      id: 'valid_id',
+      name: 'any_name',
+      content: 'any_content',
+      userId: 'any_user_id'
+    })
   })
 })
