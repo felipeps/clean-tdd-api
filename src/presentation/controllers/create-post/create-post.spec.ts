@@ -95,4 +95,25 @@ describe('CreatePost Controller', () => {
       userId: 'any_user_id'
     })
   })
+
+  test('Should return 500 if AddPost throws', async () => {
+    const { sut, addPostStub } = makeSut()
+
+    jest.spyOn(addPostStub, 'add').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        content: 'any_email@mail.com',
+        userId: 'any_user_id'
+      }
+    }
+
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new Error())
+  })
 })
