@@ -37,5 +37,14 @@ describe('Jwt Adapter', () => {
 
       expect(verifySpy).toHaveBeenCalledWith(token, 'secret')
     })
+
+    test('Should return a token on verify success', async () => {
+      const sut = new JwtAdapter('secret')
+      const verifySpy = jest.spyOn(jwt, 'verify')
+      const token = jwt.sign({ id: 'any_id' }, 'secret')
+      const value = await sut.decrypt(token)
+
+      expect(value).toBeTruthy()
+    })
   })
 })
