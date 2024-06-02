@@ -2,7 +2,6 @@ import { AddPost } from '../../../domain/usecases/add-post'
 import { MissingParamError } from '../../errors/missing-param-error'
 import { badRequest } from '../../helpers/http-helper'
 import { Validation } from '../../helpers/validators/validation'
-import { Controller } from '../../protocols/controller'
 import { CreatePostController } from './create-post'
 
 const makeValidation = (): Validation => {
