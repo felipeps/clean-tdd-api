@@ -1,5 +1,5 @@
 import { AddPost } from '../../../domain/usecases/add-post'
-import { badRequest, serverError } from '../../helpers/http-helper'
+import { badRequest, ok, serverError } from '../../helpers/http-helper'
 import { Validation } from '../../helpers/validators/validation'
 import { Controller } from '../../protocols/controller'
 import { HttpRequest, HttpResponse } from '../../protocols/http'
@@ -21,9 +21,9 @@ export class CreatePostController implements Controller {
         return badRequest(error)
       }
 
-      this.addPost.add(httpRequest.body)
+      const post = await this.addPost.add(httpRequest.body)
 
-      return new Promise(resolve => resolve(null))
+      return ok(post)
     } catch (error) {
       return serverError(error)
     }
