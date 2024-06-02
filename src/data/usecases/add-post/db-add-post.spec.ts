@@ -49,4 +49,20 @@ describe('DbAddPost Usecase', () => {
       userId: 'valid_user_id'
     })
   })
+
+  test('Should throw if AddPostRepository throws', async () => {
+    const { sut, addPostRepositoryStub } = makeSut()
+
+    jest.spyOn(addPostRepositoryStub, 'add').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const postData = {
+      name: 'valid_name',
+      content: 'valid_content',
+      userId: 'valid_user_id'
+    }
+
+    expect(sut.add(postData)).rejects.toThrow()
+  })
 })
