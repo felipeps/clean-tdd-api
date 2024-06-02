@@ -1,6 +1,6 @@
 import { Express, Router } from 'express'
 import loginRoutes from '../routes/login/login-routes'
-import postRoutes from '../routes/post-routes'
+import postRoutes from '../routes/post/post-routes'
 
 export default (app: Express): void => {
   const router = Router()
