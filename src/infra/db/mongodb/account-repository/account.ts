@@ -47,6 +47,11 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
     const account = await accountCollection.findOne({
       accessToken: token
     })
+
+    if (!account) {
+      return null
+    }
+
     return {
       id: account._id.toString(),
       name: account.name,
