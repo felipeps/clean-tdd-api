@@ -65,4 +65,21 @@ describe('DbAddPost Usecase', () => {
 
     expect(sut.add(postData)).rejects.toThrow()
   })
+
+  test('Should return a post on success', async () => {
+    const { sut } = makeSut()
+    const postData = {
+      name: 'valid_name',
+      content: 'valid_content',
+      userId: 'valid_user_id'
+    }
+    const account = await sut.add(postData)
+
+    expect(account).toEqual({
+      id: 'valid_id',
+      name: 'valid_name',
+      content: 'valid_content',
+      userId: 'valid_user_id'
+    })
+  })
 })
