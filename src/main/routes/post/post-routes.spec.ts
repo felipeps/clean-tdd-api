@@ -19,7 +19,7 @@ describe('Post Routes', () => {
     await MongoHelper.disconnect()
   })
 
-  test('Should return 200 on create post', async () => {
+  test('Should return 403 on create post if no auth', async () => {
     await request(app)
       .post('/api/post')
       .send({
@@ -27,7 +27,7 @@ describe('Post Routes', () => {
         content: 'any_content',
         userId: 'any_user_id'
       })
-      .expect(200)
+      .expect(403)
   })
 
   test('Should return 200 on load post', async () => {
