@@ -15,6 +15,7 @@ export class CreatePostController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
+      httpRequest.body.userId = httpRequest.userId
       const error = this.validation.validate(httpRequest.body)
 
       if (error) {
