@@ -6,6 +6,6 @@ import { makeCreatePostValidation } from './create-post-validation'
 export const makeCreatePostController = (): Controller => {
   const validations = makeCreatePostValidation()
   const postRepository = new PostMongoRepository()
-  const postController = new CreatePostController(validations, postRepository)
-  return postController
+  const createPostController = new CreatePostController(validations, postRepository)
+  return createPostController
 }
