@@ -49,4 +49,14 @@ describe('DbLoadPost Usecase', () => {
       userId: 'valid_user_id'
     })
   })
+
+  test('Should call LoadPostRepository with null values', async () => {
+    const { sut, loadPostRepositoryStub } = makeSut()
+    const loadSpy = jest.spyOn(loadPostRepositoryStub, 'load')
+    const postData = {}
+
+    await sut.load(postData)
+
+    expect(loadSpy).toHaveBeenCalledWith({})
+  })
 })
