@@ -74,4 +74,17 @@ describe('DbLoadPost Usecase', () => {
 
     expect(sut.load(postData)).rejects.toThrow()
   })
+
+  test('Should return list of posts on success', async () => {
+    const { sut } = makeSut()
+    const postData = {}
+    const account = await sut.load(postData)
+
+    expect(account).toEqual([{
+      id: 'valid_id',
+      name: 'valid_name',
+      content: 'valid_content',
+      userId: 'valid_user_id'
+    }])
+  })
 })
