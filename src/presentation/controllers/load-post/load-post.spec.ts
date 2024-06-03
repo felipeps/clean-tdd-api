@@ -54,4 +54,15 @@ describe('LoadPost Controller', () => {
       userId: 'any_user_id'
     })
   })
+
+  test('Should call LoadPost with null values', async () => {
+    const { sut, loadPostStub } = makeSut()
+    const addSpy = jest.spyOn(loadPostStub, 'load')
+
+    await sut.handle({
+      body: {}
+    })
+
+    expect(addSpy).toHaveBeenCalledWith({})
+  })
 })
