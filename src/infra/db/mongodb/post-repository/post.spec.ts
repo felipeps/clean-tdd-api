@@ -75,5 +75,46 @@ describe('Post Mongo Repository', () => {
         }
       ])
     })
+
+    test('Should return list of posts on load success filtering by id', async () => {
+      const sut = new PostMongoRepository()
+
+      await postCollection.insertMany([
+        {
+          name: 'any_name',
+          content: 'any_content',
+          userId: 'any_user_id'
+        },
+        {
+          name: 'any_name_2',
+          content: 'any_content_2',
+          userId: 'any_user_id'
+        },
+        {
+          name: 'any_name_3',
+          content: 'any_content_3',
+          userId: 'any_user_id_3'
+        }
+      ])
+
+      const posts = await sut.load({
+        userId: 'any_user_id'
+      })
+
+      expect(posts).toEqual([
+        {
+          id: expect.any(String),
+          name: 'any_name',
+          content: 'any_content',
+          userId: 'any_user_id'
+        },
+        {
+          id: expect.any(String),
+          name: 'any_name_2',
+          content: 'any_content_2',
+          userId: 'any_user_id'
+        }
+      ])
+    })
   })
 })
