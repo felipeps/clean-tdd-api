@@ -65,4 +65,24 @@ describe('LoadPost Controller', () => {
 
     expect(addSpy).toHaveBeenCalledWith({})
   })
+
+  test('Should return 500 if LoadPost throws', async () => {
+    const { sut, loadPostStub } = makeSut()
+
+    jest.spyOn(loadPostStub, 'load').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        userId: 'any_user_id'
+      }
+    }
+
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new Error())
+  })
 })
