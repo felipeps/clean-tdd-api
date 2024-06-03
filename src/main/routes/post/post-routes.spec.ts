@@ -29,4 +29,14 @@ describe('Post Routes', () => {
       })
       .expect(200)
   })
+
+  test('Should return 200 on load post', async () => {
+    await request(app)
+      .get('/api/post')
+      .send({
+        name: 'any_name',
+        userId: 'any_user_id'
+      })
+      .expect(200)
+  })
 })
