@@ -1,5 +1,5 @@
 import { LoadPost } from '../../../domain/usecases/load-post'
-import { serverError } from '../../helpers/http-helper'
+import { ok, serverError } from '../../helpers/http-helper'
 import { Validation } from '../../helpers/validators/validation'
 import { Controller } from '../../protocols/controller'
 import { HttpRequest, HttpResponse } from '../../protocols/http'
@@ -13,8 +13,8 @@ export class LoadPostController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      this.loadPost.load(httpRequest.body)
-      return null
+      const posts = await this.loadPost.load(httpRequest.body)
+      return ok(posts)
     } catch (error) {
       return serverError(error)
     }

@@ -85,4 +85,26 @@ describe('LoadPost Controller', () => {
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new Error())
   })
+
+  test('Should return 200 if valid data is provided', async () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      body: {}
+    }
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse.statusCode).toBe(200)
+    expect(httpResponse.body).toEqual([
+      {
+        id: 'valid_id',
+        name: 'any_name',
+        content: 'any_content'
+      },
+      {
+        id: 'valid_id_2',
+        name: 'any_name_2',
+        content: 'any_content_2'
+      }
+    ])
+  })
 })
