@@ -84,10 +84,10 @@ describe('CreatePost Controller', () => {
     const { sut, addPostStub } = makeSut()
     const addSpy = jest.spyOn(addPostStub, 'add')
     const httpRequest = {
+      userId: 'any_user_id',
       body: {
         name: 'any_name',
-        content: 'any_content',
-        userId: 'any_user_id'
+        content: 'any_content'
       }
     }
 
