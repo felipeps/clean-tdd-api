@@ -41,7 +41,7 @@ describe('LoadPost Controller', () => {
     const { sut, loadPostStub } = makeSut()
     const addSpy = jest.spyOn(loadPostStub, 'load')
     const httpRequest = {
-      body: {
+      query: {
         name: 'any_name',
         userId: 'any_user_id'
       }
@@ -60,7 +60,7 @@ describe('LoadPost Controller', () => {
     const addSpy = jest.spyOn(loadPostStub, 'load')
 
     await sut.handle({
-      body: {}
+      query: {}
     })
 
     expect(addSpy).toHaveBeenCalledWith({})
@@ -74,7 +74,7 @@ describe('LoadPost Controller', () => {
     })
 
     const httpRequest = {
-      body: {
+      query: {
         name: 'any_name',
         userId: 'any_user_id'
       }
@@ -89,7 +89,7 @@ describe('LoadPost Controller', () => {
   test('Should return 200 if valid data is provided', async () => {
     const { sut } = makeSut()
     const httpRequest = {
-      body: {}
+      query: {}
     }
     const httpResponse = await sut.handle(httpRequest)
 
