@@ -59,4 +59,19 @@ describe('DbLoadPost Usecase', () => {
 
     expect(loadSpy).toHaveBeenCalledWith({})
   })
+
+  test('Should throw if LoadPostRepository throws', async () => {
+    const { sut, loadPostRepositoryStub } = makeSut()
+
+    jest.spyOn(loadPostRepositoryStub, 'load').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const postData = {
+      name: 'valid_name',
+      userId: 'valid_user_id'
+    }
+
+    expect(sut.load(postData)).rejects.toThrow()
+  })
 })
