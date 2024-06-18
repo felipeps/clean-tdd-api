@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node dist/main/server.js",
+    "build": "rimraf dist && tsc",
+    "dev": "sucrase-node src/main/server.ts",
     "test": "jest --passWithNoTests --watch --runInBand",
     "test:coverage": "jest --passWithNoTests --watch --runInBand --coverage",
-    "start": "sucrase-node src/main/server.ts",
     "docker:build": "docker build -t mongo-image .",
     "docker:run": "docker run -d -p 27017:27017 --name mongo-container mongo-image",
     "docker:stop": "docker stop mongo-container",
