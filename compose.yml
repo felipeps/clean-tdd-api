@@ -1,10 +1,10 @@
 services:
   mongo:
     container_name: mongo-container
-    image: 6
+    image: "mongo:6"
     restart: always
     volumes:
-      - ./data:/data/db
+      - ./data:/usr/src/data/db
     ports:
       - "27017:27017"
   api:
@@ -18,7 +18,5 @@ services:
     ports:
       - "5050:5050"
     depends_on:
-      mongo:
-        condition: service_healthy
-        restart: true
+      - "mongo"
     
