@@ -1,0 +1,24 @@
+services:
+  mongo:
+    container_name: mongo-container
+    image: 6
+    restart: always
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
+  api:
+    container_name: api-container
+    build: .
+    restart: always
+    image: clean-tdd-api
+    command: npm start
+    volumes:
+      - ./dist:/usr/src/clean-tdd-api/dist
+    ports:
+      - "5050:5050"
+    depends_on:
+      mongo:
+        condition: service_healthy
+        restart: true
+    
