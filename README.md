@@ -4,20 +4,9 @@ To run the project, you need to have Node.js installed on your machine. If you d
 
 Edit the env vars in the `src/main/config/env.ts` file to match your environment.
 
-Run the following commands to build and start a mongodb container:
+Run the following commands to build and start the project and db in containers:
 ```bash
-docker:build
-docker:run
-```
-
-Run the following commands to install the project dependencies:
-```bash
-npm i
-```
-
-Run the following command to start the server:
-```bash
-npm start
+npm run up
 ```
 
 ## Tests
